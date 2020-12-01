@@ -1,0 +1,7 @@
+*.o
+first.*
+/tips
+Makefile
+dissasm
+
+
