@@ -24,7 +24,9 @@ void read_file(FILE* fp, Elf32_Ehdr* elfhead){
 
 
 
-void read_sectors(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
+
+
+void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 
 
 	// we stand the pointer upon the beggining of the section header
@@ -33,33 +35,46 @@ void read_sectors(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 	fseek(fp, elfhead->e_shoff,SEEK_SET);
 	fread(elf_shdr,  sizeof(Elf32_Shdr), elfhead->e_shnum ,fp);
 
-	printf(" READING SECTIONS\n" );
+	// we bring the string table to cache the section names
+
+	char* string_table;
+	string_table = malloc( elf_shdr[elfhead->e_shstrndx].sh_size);
+
+	fseek(fp,elf_shdr[elfhead->e_shstrndx].sh_offset,SEEK_SET); 		// set the fp pointer upon the string table section
+	fread(string_table,elf_shdr[elfhead->e_shstrndx].sh_size,1,fp); 	// bring the table to memory 
+
+
+	printf("========================\n");
+	printf("************************\n");
+	printf("READING SECTIONS\n" );
+	printf("************************\n");
 	printf("========================\n");
 
 
-	unsigned int* instructions;
+	//unsigned int* instructions = NULL;
 
 	for ( int i=0 ; i < elfhead->e_shnum ; i++){
 
-		instructions = malloc (elf_shdr[i].sh_size + 4);
+		//instructions = malloc (elf_shdr[i].sh_size + 4);
 
-		printf(" section %d\n", elf_shdr[i].sh_name);
-		printf(" type  %d\n", elf_shdr[i].sh_type );
-		printf(" size %d\n",elf_shdr[i].sh_size );
+		printf(" section name : %s\n",string_table + elf_shdr[i].sh_name);
+		printf(" section type : %d\n", elf_shdr[i].sh_type );
+		printf(" section size : %d\n",elf_shdr[i].sh_size );
 
 		// read data from section 
-		fseek(fp,elf_shdr[i].sh_offset,SEEK_SET);
+	//   fseek(fp,elf_shdr[i].sh_offset,SEEK_SET);
+	//	fread(instructions,elf_shdr[i].sh_size,1,fp);
 
-		fread(instructions,elf_shdr[i].sh_size,1,fp);
+		// find name 
+		printf(" Dissasembly of section %s\n",string_table + elf_shdr[i].sh_name );
 
-		printf(" ASM of section %d\n",elf_shdr[i].sh_name );
-
-		printf("%ls\n", instructions );
-
+	//	printf("%ls\n", instructions );
 		printf("\n");
 
-		free(instructions);
+//		free(instructions);
 	}
+
+	free(string_table);
 }
 
 
@@ -112,7 +127,7 @@ int main (int argc, char** argv){
 
 	// read sectors 
 
-	read_sectors(fp,elfhead,elf_shdr);
+	read_sections(fp,elfhead,elf_shdr);
 
 	free(elfhead);
 	free(elf_shdr);
