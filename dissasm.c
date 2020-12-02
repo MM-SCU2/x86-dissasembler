@@ -5,7 +5,7 @@
 
 void read_file(FILE* fp, Elf32_Ehdr* elfhead){
 
-	// we read the header file 
+	//  read the header file 
 
 	fread(elfhead,sizeof(Elf32_Ehdr),1,fp);
 	// check that it open it correctly 
@@ -23,19 +23,16 @@ void read_file(FILE* fp, Elf32_Ehdr* elfhead){
 }
 
 
-
-
-
 void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 
 
-	// we stand the pointer upon the beggining of the section header
-	// and read from it 
+	// stand the FP pointer upon the beggining of the section header
+	// and copy into the buffer  
 
 	fseek(fp, elfhead->e_shoff,SEEK_SET);
 	fread(elf_shdr,  sizeof(Elf32_Shdr), elfhead->e_shnum ,fp);
 
-	// we bring the string table to cache the section names
+	// allocate the string table to cache the section names
 
 	char* string_table;
 	string_table = malloc( elf_shdr[elfhead->e_shstrndx].sh_size);
@@ -51,27 +48,36 @@ void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 	printf("========================\n");
 
 
-	//unsigned int* instructions = NULL;
+	unsigned int* instructions = NULL;
 
 	for ( int i=0 ; i < elfhead->e_shnum ; i++){
 
-		//instructions = malloc (elf_shdr[i].sh_size + 4);
+		instructions = malloc(elf_shdr[i].sh_size );
 
 		printf(" section name : %s\n",string_table + elf_shdr[i].sh_name);
 		printf(" section type : %d\n", elf_shdr[i].sh_type );
 		printf(" section size : %d\n",elf_shdr[i].sh_size );
 
 		// read data from section 
-	//   fseek(fp,elf_shdr[i].sh_offset,SEEK_SET);
-	//	fread(instructions,elf_shdr[i].sh_size,1,fp);
+    	fseek(fp,elf_shdr[i].sh_offset,SEEK_SET);
+		fread(instructions,elf_shdr[i].sh_size,1,fp);
 
 		// find name 
 		printf(" Dissasembly of section %s\n",string_table + elf_shdr[i].sh_name );
 
-	//	printf("%ls\n", instructions );
-		printf("\n");
 
-//		free(instructions);
+
+
+		for (unsigned int j = 0 ; j < elf_shdr[i].sh_size / sizeof(unsigned int); j++){
+
+			printf("%d\n ", instructions[j]);
+		}
+	
+
+
+
+		printf("\n");
+		free(instructions);
 	}
 
 	free(string_table);
