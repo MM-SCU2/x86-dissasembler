@@ -48,7 +48,7 @@ void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 	printf("========================\n");
 
 
-	unsigned int* instructions = NULL;
+	uint8_t* instructions = NULL;
 
 	for ( int i=0 ; i < elfhead->e_shnum ; i++){
 
@@ -66,11 +66,14 @@ void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 		printf(" Dissasembly of section %s\n",string_table + elf_shdr[i].sh_name );
 
 
+		for (uint8_t j = 0 ; j < elf_shdr[i].sh_size ; j++){
+
+			//printf("%d\n ", instructions[j]);
 
 
-		for (unsigned int j = 0 ; j < elf_shdr[i].sh_size / sizeof(unsigned int); j++){
-
-			printf("%d\n ", instructions[j]);
+			if( instructions[j] == 0xB8){
+				printf("mov \n" );
+			}
 		}
 	
 
