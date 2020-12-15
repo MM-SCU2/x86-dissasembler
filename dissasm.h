@@ -1,11 +1,13 @@
 #ifndef DISSASM_H
 #define DISSASM_H
 
+#include "opcode_map.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include "elf.h"
+
 
 
 /*
@@ -47,7 +49,7 @@ typedef struct {
 */
 void read_file(FILE* fp, Elf32_Ehdr* elfhead);
 void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr);
-
+uint8_t decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset);
 
 
 #endif

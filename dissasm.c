@@ -1,3 +1,4 @@
+#include "opcode_map.h"
 #include "dissasm.h"
 
 
@@ -21,6 +22,8 @@ void read_file(FILE* fp, Elf32_Ehdr* elfhead){
 	printf(" Machine version %d\n",elfhead->e_machine);  // number 3 indicates intel 80386
 	printf(" Entry %d\n", elfhead->e_entry);
 }
+
+
 
 
 void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
@@ -60,31 +63,28 @@ void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 
 		// read data from section 
     	fseek(fp,elf_shdr[i].sh_offset,SEEK_SET);
-		fread(instructions,elf_shdr[i].sh_size,1,fp);
+ 		fread(instructions,elf_shdr[i].sh_size,1,fp);
 
 		// find name 
 		printf(" Dissasembly of section %s\n",string_table + elf_shdr[i].sh_name );
 
 
-		for (uint8_t j = 0 ; j < elf_shdr[i].sh_size ; j++){
-
-			//printf("%d\n ", instructions[j]);
+		for (uint8_t j = 0 ; j < elf_shdr[i].sh_size ;){
 
 
-			if( instructions[j] == 0xB8){
-				printf("mov \n" );
-			}
+			j+= decode(instructions ,instructions[j] ,j );
+
 		}
-	
-
-
-
+		
 		printf("\n");
 		free(instructions);
 	}
 
 	free(string_table);
 }
+
+
+
 
 
 int main (int argc, char** argv){
