@@ -1,6 +1,5 @@
-#include "opcode_map.h"
 #include "dissasm.h"
-
+#include "opcode_map.h"
 
 
 
@@ -69,12 +68,17 @@ void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 		printf(" Dissasembly of section %s\n",string_table + elf_shdr[i].sh_name );
 
 
-		for (uint8_t j = 0 ; j < elf_shdr[i].sh_size ;){
+		if( !strcmp (string_table + elf_shdr[i].sh_name, ".text") ){
 
 
-			j+= decode(instructions ,instructions[j] ,j );
+			for (uint8_t j = 0 ; j < elf_shdr[i].sh_size ;){
 
+
+				j+=decode(instructions ,instructions[j] ,j );
+
+			}
 		}
+
 		
 		printf("\n");
 		free(instructions);
