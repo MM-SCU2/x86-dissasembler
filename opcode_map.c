@@ -331,23 +331,75 @@ uint8_t string_match( char* sf, char* ss){
 }
 
 
-uint8_t one_operand( uint8_t* instructions, char* first_op , uint8_t offset){
+
+uint8_t one_operand( uint8_t* instructions, char* name ,char* first_op , uint8_t offset){
+
+
+	printf("%s\n", name );
+
+	offset++;
+	return offset;
+}
+
+
+char* operand_decode ( uint8_t * instructions, char * operand , uint8_t offset  ){
+
+	if ( operand[0] == 'G' ){  // registro 
+
+		// xx ccc xxx
+		// 0011 1000  = 0x38
+ 		uint8_t modByte = instructions[offset+1];
+		uint8_t reg_in = (modByte & 0x38) >> 3;
+		return registers[reg_in];
+
+	}
+
+	else if ( operand[0] == 'E' ){
+
+		uint8_t modByte = instructions[offset+1];
+		uint8_t reg_in1 = (modByte & 0x5);
+		uint8_t reg_in2 = (modByte & 0xc0) >> 3;
+		uint8_t reg_in = reg_in1 | reg_in2;
+
+		if( reg_in < 8){
+
+
+			return registers[reg_in];
+		}
+		else {
+			return "memory";
+		}
+
+	}
+
+	else {
+
+		return "xxx";
+	}
 
 
 
+}
 
 
-	return offset++;
+uint8_t two_operand( uint8_t* instructions, char* name ,char* first_op , char* sec_op, uint8_t offset){
+
+	char * op1 = NULL;
+	char * op2 = NULL ;
+
+	// hay que ver cuales son los operandos 
+	
+	op1 = operand_decode(instructions, first_op, offset);
+	op2 = operand_decode(instructions, sec_op, offset);
+
+	printf(" %s %s %s \n", name, op1, op2 );
+
+	offset = offset + 2;
+	return offset;
 }
 
 
 
-uint8_t two_operand( uint8_t* instructions, char* first_op , char* sec_op, uint8_t offset){
-
-
-
-	return offset++;
-}
 
 uint8_t decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
 
@@ -359,7 +411,7 @@ uint8_t decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
 	// we extract the entry and translate de information 
 
 
-	if ( !string_match(op_table[file][row].first_op,"nop") && !string_match(op_table[file][row].sec_op, "nop") ){ 	// no operands
+	if ( string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop") ){ 	// no operands
 
 		printf("%s\n", op_table[file][row].instruction );
 		offset++;
@@ -368,13 +420,13 @@ uint8_t decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
 
 	else if ( string_match(op_table[file][row].first_op,"nop") && !string_match(op_table[file][row].sec_op, "nop")) {  // one operand 
 
-		offset = one_operand ( instructions , op_table[file][row].first_op , offset);
+		offset = one_operand ( instructions , op_table[file][row].instruction ,op_table[file][row].first_op , offset);
 
 	}
 
 	else {
 
-		offset = two_operand( instructions, op_table[file][row].first_op , op_table[file][row].sec_op , offset);
+		offset = two_operand( instructions, op_table[file][row].instruction ,op_table[file][row].first_op , op_table[file][row].sec_op , offset);
 	}
 
 	
