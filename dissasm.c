@@ -1,5 +1,5 @@
 #include "dissasm.h"
-#include "opcode_map.h"
+#include "decoder.h"
 
 
 

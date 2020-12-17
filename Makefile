@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-g -Wall -Werror
-DEPS= dissasm.h opcode_map.h
-OBJ= dissasm.o opcode_map.o
+DEPS= dissasm.h opcode_map.h decoder.h
+OBJ= dissasm.o decoder.o opcode_map.o
 FILE= *.o dissasm 
 
 %.o: %.c $(DEPS)
