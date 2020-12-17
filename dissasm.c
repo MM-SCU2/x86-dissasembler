@@ -71,10 +71,14 @@ void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 		if( !strcmp (string_table + elf_shdr[i].sh_name, ".text") ){
 
 
+			printf("\n");
+			printf(" _start: \n");
+			printf("\n");
+
 			for (uint8_t j = 0 ; j < elf_shdr[i].sh_size ;){
 
 
-				j=  decode(instructions ,instructions[j] ,j );
+				j = decode(instructions ,instructions[j] ,j );  			// decode each instructions
 
 			}
 		}
