@@ -1,6 +1,9 @@
 #include "decoder.h"
 
-char* registers [8] = { "eax","ecx","edx","ebx","esp","ebp", "esi", "edi"};
+char* extended_registers [8] = { "eax","ecx","edx","ebx","esp","ebp", "esi", "edi"};
+char* half_registers [8] = { "ax","cx","dx","bx","sp","bp", "si", "di"};
+
+
 
 uint8_t string_match( char* sf, char* ss){
 
@@ -24,7 +27,7 @@ uint8_t is_reg( char* operand ){
 
 	for( uint8_t i = 0 ; i < 8 ; i++){
 
-		if(string_match ( operand , registers[i] ) ){
+		if(string_match ( operand , extended_registers[i] ) ){
 
 			return 1;
 		}
@@ -34,7 +37,150 @@ uint8_t is_reg( char* operand ){
 }
 
 
-uint8_t one_operand( uint8_t* instructions, char* name ,char* first_op , uint8_t offset){
+uint8_t ajustment ( char* type, uint8_t offset ){
+
+
+
+	if ( type[1] == 'b'){  // byte
+
+		offset++;
+
+	}
+
+	else if( type[1] == 'w') {  // word
+
+		offset = offset + 2;
+
+	}
+
+	else if( type[1] == 'd') {  // double word
+
+		offset = offset + 4;
+
+	}
+
+	else{
+
+		offset ++;
+	}
+
+	return offset;
+}
+
+
+
+
+uint8_t inst_size(uint8_t* instructions, uint8_t opcode, uint8_t offset){
+
+
+	uint8_t file = (opcode >> 4) & 0x0f;
+	uint8_t row = opcode & 0x0f;
+	uint8_t res = 0;
+
+	// check if it has mod byte 
+
+	// the instruction has none operand so none mob byte or aditional features
+	if ( string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop") ){ 	// no operands
+
+		res++;
+
+	}
+	// the instructions has one operand so a move byte, we have to determinate its size 
+	else if ( !string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop") ){ 
+
+		if(op_table[file][row].first_op[0] == 'O'){ 		// has an immediate
+
+			res+=4;
+		}
+
+
+		else if ( op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E' ){  //  the reg-mod bits indicate a register 
+
+			// one for the mod byte 
+			res+=2;
+		}
+
+		else res+=2;
+
+	}
+
+	// two operands . it has mode byte
+	else{ 
+
+		if ( op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E' ){  //  the reg-mod bits indicate a register 
+
+			// one for the mod byte 
+			res+=2;
+		}
+
+	else res+=2;
+
+	}
+
+	return res;
+}
+
+
+
+char* operand_decode ( uint8_t * instructions, char * operand , uint8_t offset  ){
+
+
+	if(  is_reg( operand ) ){
+
+
+	for( uint8_t i = 0 ; i < 8 ; i++){
+
+			if(string_match ( operand , extended_registers[i] ) ){
+
+				return extended_registers[i];
+			}
+		}
+	}
+
+
+	else if ( operand[0] == 'G' ){  //  the reg-mod bits indicate a register 
+
+		// xx ccc xxx
+		// 0011 1000  = 0x38
+ 		uint8_t modByte = instructions[offset+1];
+		uint8_t reg_in = (modByte & 0x38) >> 3; 		// turn it into an index
+		return extended_registers[reg_in];
+
+	}
+
+	else if ( operand[0] == 'E' ){ 	// the mod indicates type of acceses and reg the register
+
+		uint8_t modByte = instructions[offset+1];
+
+		uint8_t r1 = modByte & 0x7; 			//index
+		uint8_t r2 = (modByte & 0xc0) >> 6; 	// mod 
+
+		if( r2 == 0x3){ 				// the mod bits indicate that the r/g bits are extended_registers 
+
+			return extended_registers[r1];
+		}
+
+		else return "xxx";
+
+	}
+
+
+	else if ( operand[0] == 'I' ){  //  the operand is the inmediate data 
+
+		char data = (char)instructions[offset+1];
+		char* res = &data; 
+		return res;
+
+	}
+
+	return "xxx";
+}
+
+
+
+
+
+void one_operand( uint8_t* instructions, char* name ,char* first_op , uint8_t offset){
 
 
 	if(  is_reg( first_op ) ){
@@ -48,49 +194,10 @@ uint8_t one_operand( uint8_t* instructions, char* name ,char* first_op , uint8_t
 		printf("  %s %s  \n", name,op );
 	}
 
-	offset++;
-	return offset;
 }
 
 
-char* operand_decode ( uint8_t * instructions, char * operand , uint8_t offset  ){
-
-	if ( operand[0] == 'G' ){  //  the reg-mod bits indicate a register 
-
-		// xx ccc xxx
-		// 0011 1000  = 0x38
- 		uint8_t modByte = instructions[offset+1];
-		uint8_t reg_in = (modByte & 0x38) >> 3; 		// turn it into an index
-		return registers[reg_in];
-
-	}
-
-	else if ( operand[0] == 'E' ){ 	// the mod indicates type of acceses and reg the register
-
-		uint8_t modByte = instructions[offset+1];
-
-		uint8_t r1 = modByte & 0x7; 			//index
-		uint8_t r2 = (modByte & 0xc0) >> 6; 	// mod 
-
-		if( r2 == 0x3){
-
-
-			return registers[r1];
-		}
-
-		else return "xxx";
-
-	}
-
-	else {
-
-		return "xxx";
-	}
-
-}
-
-
-uint8_t two_operand( uint8_t* instructions, char* name ,char* first_op , char* sec_op, uint8_t offset){
+void two_operand( uint8_t* instructions, char* name ,char* first_op , char* sec_op, uint8_t offset){
 
 	char * op1 = NULL;
 	char * op2 = NULL ;
@@ -100,17 +207,16 @@ uint8_t two_operand( uint8_t* instructions, char* name ,char* first_op , char* s
 	op1 = operand_decode(instructions, first_op, offset);
 	op2 = operand_decode(instructions, sec_op, offset);
 
+	// hay que ajustar el offset segun corresponda 
 
 	printf("  %s %s, %s \n", name, op1, op2 );
 
-	offset = offset + 2;
-	return offset;
 }
 
 
 
 
-uint8_t decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
+void decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
 
 	// we get the indexes to the op table 
 
@@ -120,28 +226,23 @@ uint8_t decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
 	// extract the entry and translate de information 
 
 	// the instruction has none operand 
-	if ( string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop") ){ 	// no operands
+	if ( string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop") ){ 	
 
 		printf("  %s\n", op_table[file][row].instruction );
-		offset++;
-
 	}
 
 	// the instruction has one operand 
-	else if ( !string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop")) {  // one operand 
+	else if ( !string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop")) {  
 
-		offset = one_operand ( instructions , op_table[file][row].instruction ,op_table[file][row].first_op , offset);
-
+		one_operand ( instructions , op_table[file][row].instruction ,op_table[file][row].first_op , offset);
 	}
 
 	// the instruction has two operands 
 	else {
 
-		offset = two_operand( instructions, op_table[file][row].instruction ,op_table[file][row].first_op , op_table[file][row].sec_op , offset);
+		two_operand( instructions, op_table[file][row].instruction ,op_table[file][row].first_op , op_table[file][row].sec_op , offset);
 	}
 
-	
-	return offset;
 
 } 		
 

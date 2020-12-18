@@ -503,7 +503,227 @@ opcode_entry op_table [16][16] = {
  		(char*) "nop",
  	},
 
+ 	[5][0] = (opcode_entry) {
 
+ 		(char*) "push",
+ 		(char*) "eax",
+ 		(char*) "nop",
+ 	},
+ 	[5][1] = (opcode_entry) {
+
+ 		(char*) "push",
+ 		(char*) "ecx",
+ 		(char*) "nop",
+ 	},
+ 	[5][2] = (opcode_entry) {
+
+ 		(char*) "push",
+ 		(char*) "edx",
+ 		(char*) "nop",
+ 	},
+ 	[5][3] = (opcode_entry) {
+
+ 		(char*) "push",
+ 		(char*) "ebx",
+ 		(char*) "nop",
+ 	},
+ 	[5][4] = (opcode_entry) {
+
+ 		(char*) "push",
+ 		(char*) "esp",
+ 		(char*) "nop",
+ 	},
+ 	[5][5] = (opcode_entry) {
+
+ 		(char*) "push",
+ 		(char*) "ebp",
+ 		(char*) "nop",
+ 	},
+ 	[5][6] = (opcode_entry) {
+
+ 		(char*) "push",
+ 		(char*) "esi",
+ 		(char*) "nop",
+ 	},
+ 	[5][7] = (opcode_entry) {
+
+ 		(char*) "push",
+ 		(char*) "edi",
+ 		(char*) "nop",
+ 	},
+
+ 	[5][8] = (opcode_entry) {
+
+ 		(char*) "pop",
+ 		(char*) "eax",
+ 		(char*) "nop",
+ 	},
+ 	[5][9] = (opcode_entry) {
+
+ 		(char*) "pop",
+ 		(char*) "ecx",
+ 		(char*) "nop",
+ 	},
+ 	[5][10] = (opcode_entry) {
+
+ 		(char*) "pop",
+ 		(char*) "edx",
+ 		(char*) "nop",
+ 	},
+ 	[5][11] = (opcode_entry) {
+
+ 		(char*) "pop",
+ 		(char*) "ebx",
+ 		(char*) "nop",
+ 	},
+ 	[5][12] = (opcode_entry) {
+
+ 		(char*) "pop",
+ 		(char*) "esp",
+ 		(char*) "nop",
+ 	},
+ 	[5][13] = (opcode_entry) {
+
+ 		(char*) "pop",
+ 		(char*) "ebp",
+ 		(char*) "nop",
+ 	},
+ 	[5][14] = (opcode_entry) {
+
+ 		(char*) "pop",
+ 		(char*) "esi",
+ 		(char*) "nop",
+ 	},
+ 	[5][15] = (opcode_entry) {
+
+ 		(char*) "pop",
+ 		(char*) "edi",
+ 		(char*) "nop",
+ 	},
+
+
+ 	[8][8] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "Eb",
+ 		(char*) "Gb",
+ 	},
+ 	[8][9] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "Ev",
+ 		(char*) "Gv",
+ 	},
+ 	[8][10] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "Gb",
+ 		(char*) "Eb",
+ 	},
+
+ 	[8][11] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "Gv",
+ 		(char*) "Ev",
+ 	 },
+
+ 	[11][0] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "al",
+ 		(char*) "Ib",
+ 	},
+ 	[11][1] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "cl",
+ 		(char*) "Ib",
+ 	},
+ 	[11][2] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "dl",
+ 		(char*) "Ib",
+ 	},
+ 	[11][3] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "bl",
+ 		(char*) "Ib",
+ 	},
+ 	[11][4] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "ah",
+ 		(char*) "Ib",
+ 	},
+ 	[11][5] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "ch",
+ 		(char*) "Ib",
+ 	},
+ 	[11][6] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "dh",
+ 		(char*) "Ib",
+ 	},
+ 	[11][7] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "bh",
+ 		(char*) "Ib",
+ 	},
+	[11][8] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "eax",
+ 		(char*) "Iv",
+ 	},
+ 	[11][9] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "ecx",
+ 		(char*) "Iv",
+ 	},
+ 	[11][10] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "edx",
+ 		(char*) "Iv",
+ 	},
+ 	[11][11] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "ebx",
+ 		(char*) "Iv",
+ 	},
+ 	[11][12] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "esp",
+ 		(char*) "Iv",
+ 	},
+ 	[11][13] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "ebp",
+ 		(char*) "Iv",
+ 	},
+ 	[11][14] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "esi",
+ 		(char*) "Iv",
+ 	},
+ 	[11][15] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "edi",
+ 		(char*) "Iv",
+ 	},
 };
 
 
