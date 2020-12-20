@@ -5,6 +5,18 @@ char* half_registers [8] = { "ax","cx","dx","bx","sp","bp", "si", "di"};
 char res [4]; // to store the bytes of an immediate
 
 
+/*
+=============================
+=============================
+
+COMPARISON AND LENGHT FUNCTIONS 
+
+=============================
+=============================
+
+*/
+
+
 
 uint8_t string_match( char* sf, char* ss){
 
@@ -39,6 +51,8 @@ uint8_t is_reg( char* operand ){
 
 
 
+
+
 uint8_t inst_size(uint8_t* instructions, uint8_t opcode, uint8_t offset){
 
 
@@ -69,9 +83,9 @@ uint8_t inst_size(uint8_t* instructions, uint8_t opcode, uint8_t offset){
 	// two operands . it has mode byte
 	else{ 
 
-		if ( op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E' ) res+=2;
+		if ( (op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E')  && op_table[file][row].sec_op[0] != 'I' ) res+=2;
 		
-		else if(op_table[file][row].first_op[0] == 'I') res+=5;	
+		else if(op_table[file][row].sec_op[0] == 'I') res+=5;	
 
 		else res+=2;
 
@@ -80,6 +94,27 @@ uint8_t inst_size(uint8_t* instructions, uint8_t opcode, uint8_t offset){
 	return res;
 }
 
+
+/*=========================================
+===========================================
+
+DECODIFICATION FUNCTIONS
+
+============================================
+============================================
+*/
+
+
+void has_immediate(uint8_t* instructions, char* name ,char* op1 , char* sec_op, uint8_t offset){
+
+		uint8_t data1 = instructions[offset+2];
+		uint8_t data2 = instructions[offset+3];
+		uint8_t data3 = instructions[offset+4];
+		uint8_t data4 = instructions[offset+5];
+
+		int immediate = ( data1 << 24) | (data2 << 16)  | (data3 << 8) | data4;
+		printf("  %s %s, %d \n", name, op1, immediate );
+}
 
 
 char* operand_decode ( uint8_t * instructions, char * operand , uint8_t offset  ){
@@ -125,25 +160,8 @@ char* operand_decode ( uint8_t * instructions, char * operand , uint8_t offset  
 	}
 
 
-	else if ( operand[0] == 'I' ){  //  the operand is the inmediate data 
-
-		char data1 = instructions[offset+2];
-		char data2 = instructions[offset+3];
-		char data3 = instructions[offset+4];
-		char data4 = instructions[offset+5];
-		 
-		res[0] = data1;
-		res[1] = data2;
-		res[2] = data3;
-		res[3] = data4;
-		return res;
-
-	}
-
 	return "xxx";
 }
-
-
 
 
 
@@ -164,6 +182,7 @@ void one_operand( uint8_t* instructions, char* name ,char* first_op , uint8_t of
 }
 
 
+
 void two_operand( uint8_t* instructions, char* name ,char* first_op , char* sec_op, uint8_t offset){
 
 	char * op1 = NULL;
@@ -172,14 +191,30 @@ void two_operand( uint8_t* instructions, char* name ,char* first_op , char* sec_
 	// hay que ver cuales son los operandos 
 	
 	op1 = operand_decode(instructions, first_op, offset);
-	op2 = operand_decode(instructions, sec_op, offset);
 
-	// hay que ajustar el offset segun corresponda 
+	if( sec_op[0] == 'I'){
 
-	printf("  %s %s, %s \n", name, op1, op2 );
+		has_immediate(instructions,name,op1,sec_op,offset);
+	}
 
+	else{
+
+		op2 = operand_decode(instructions, sec_op, offset);
+		printf("  %s %s, %s \n", name, op1, op2 );
+	} 
 }
 
+
+
+/*
+============================================
+==========================================
+
+MAIN DECODE FUNCTION
+
+==========================================
+==========================================
+*/
 
 
 
