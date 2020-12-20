@@ -2,6 +2,7 @@
 
 char* extended_registers [8] = { "eax","ecx","edx","ebx","esp","ebp", "esi", "edi"};
 char* half_registers [8] = { "ax","cx","dx","bx","sp","bp", "si", "di"};
+char res [4]; // to store the bytes of an immediate
 
 
 
@@ -37,38 +38,6 @@ uint8_t is_reg( char* operand ){
 }
 
 
-uint8_t ajustment ( char* type, uint8_t offset ){
-
-
-
-	if ( type[1] == 'b'){  // byte
-
-		offset++;
-
-	}
-
-	else if( type[1] == 'w') {  // word
-
-		offset = offset + 2;
-
-	}
-
-	else if( type[1] == 'd') {  // double word
-
-		offset = offset + 4;
-
-	}
-
-	else{
-
-		offset ++;
-	}
-
-	return offset;
-}
-
-
-
 
 uint8_t inst_size(uint8_t* instructions, uint8_t opcode, uint8_t offset){
 
@@ -80,40 +49,31 @@ uint8_t inst_size(uint8_t* instructions, uint8_t opcode, uint8_t offset){
 	// check if it has mod byte 
 
 	// the instruction has none operand so none mob byte or aditional features
-	if ( string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop") ){ 	// no operands
+	if ( string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop")) res++;
+	
 
-		res++;
-
-	}
 	// the instructions has one operand so a move byte, we have to determinate its size 
 	else if ( !string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop") ){ 
 
-		if(op_table[file][row].first_op[0] == 'O'){ 		// has an immediate
+		if(op_table[file][row].first_op[0] == 'O') res+=4;
+		
 
-			res+=4;
-		}
-
-
-		else if ( op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E' ){  //  the reg-mod bits indicate a register 
-
-			// one for the mod byte 
-			res+=2;
-		}
-
-		else res+=2;
+		// tiene mod byte
+		else if ( op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E' ) res+=2;
+		
+		// no tiene mod byte,seguro era registro
+		else res++;
 
 	}
 
 	// two operands . it has mode byte
 	else{ 
 
-		if ( op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E' ){  //  the reg-mod bits indicate a register 
+		if ( op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E' ) res+=2;
+		
+		else if(op_table[file][row].first_op[0] == 'I') res+=5;	
 
-			// one for the mod byte 
-			res+=2;
-		}
-
-	else res+=2;
+		else res+=2;
 
 	}
 
@@ -167,8 +127,15 @@ char* operand_decode ( uint8_t * instructions, char * operand , uint8_t offset  
 
 	else if ( operand[0] == 'I' ){  //  the operand is the inmediate data 
 
-		char data = (char)instructions[offset+1];
-		char* res = &data; 
+		char data1 = instructions[offset+2];
+		char data2 = instructions[offset+3];
+		char data3 = instructions[offset+4];
+		char data4 = instructions[offset+5];
+		 
+		res[0] = data1;
+		res[1] = data2;
+		res[2] = data3;
+		res[3] = data4;
 		return res;
 
 	}
