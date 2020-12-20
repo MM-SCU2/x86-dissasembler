@@ -600,6 +600,18 @@ opcode_entry op_table [16][16] = {
  		(char*) "edi",
  		(char*) "nop",
  	},
+ 	[6][0] = (opcode_entry) {
+
+ 		(char*) "pushad",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+ 	[6][1] = (opcode_entry) {
+
+ 		(char*) "popad",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
 
 
  	[8][8] = (opcode_entry) {

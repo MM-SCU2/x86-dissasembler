@@ -105,7 +105,7 @@ DECODIFICATION FUNCTIONS
 */
 
 
-void has_immediate(uint8_t* instructions, char* name ,char* op1 , char* sec_op, uint8_t offset){
+void has_immediate(uint8_t* instructions, char* name ,char* op1 , uint8_t offset){
 
 		uint8_t data1 = instructions[offset+2];
 		uint8_t data2 = instructions[offset+3];
@@ -173,6 +173,12 @@ void one_operand( uint8_t* instructions, char* name ,char* first_op , uint8_t of
 		printf("  %s %s  \n", name,first_op );
 	}
 
+	else if( first_op[0] == 'O' ){
+
+		has_immediate(instructions,name,first_op,offset);
+
+	}
+
 	else{
 
 		char* op = operand_decode(instructions, first_op, offset);
@@ -194,7 +200,7 @@ void two_operand( uint8_t* instructions, char* name ,char* first_op , char* sec_
 
 	if( sec_op[0] == 'I'){
 
-		has_immediate(instructions,name,op1,sec_op,offset);
+		has_immediate(instructions,name,op1,offset);
 	}
 
 	else{
@@ -218,7 +224,7 @@ MAIN DECODE FUNCTION
 
 
 
-void decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
+void one_byte_Opcode(uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
 
 	// we get the indexes to the op table 
 
@@ -245,6 +251,14 @@ void decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
 		two_operand( instructions, op_table[file][row].instruction ,op_table[file][row].first_op , op_table[file][row].sec_op , offset);
 	}
 
+
+
+}
+
+
+void decode (uint8_t* instructions ,uint8_t opcode ,uint8_t offset){
+
+	one_byte_Opcode(instructions,opcode,offset);
 
 } 		
 
