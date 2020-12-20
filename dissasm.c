@@ -93,11 +93,9 @@ void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 }
 
 
+void read_ELF( int argc , char** argv ){
 
 
-
-int main (int argc, char** argv){
-	
 	FILE * fp;
 	Elf32_Ehdr* elfhead ;
 	Elf32_Shdr* elf_shdr ;
@@ -150,5 +148,15 @@ int main (int argc, char** argv){
 	free(elfhead);
 	free(elf_shdr);
 	fclose(fp);
+
+}
+
+
+
+int main (int argc, char** argv){
+	
+
+	read_ELF(argc,argv);
+
 	return 0;
 }

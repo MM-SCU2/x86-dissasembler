@@ -48,7 +48,7 @@ typedef struct {
 */
 void read_file(FILE* fp, Elf32_Ehdr* elfhead);
 void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr);
-
+void read_ELF( int argc , char** argv );
 
 
 #endif
