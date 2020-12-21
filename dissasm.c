@@ -1,3 +1,30 @@
+/**************************************************************************************************
+===================================================================================================
+
+	x86 DISASSEMBLER 
+
+	Author: MMS 
+
+	start Date: 2/12/2020
+
+	Programming lenguage: C 
+
+	supported compiled format: ELF files ( executable linkeable format )
+
+	Intentions: 
+	
+	The project was born out of the passion for system programming and compilers. The idea was to produce a simple disassembler 
+	capable of turning machine code back into ASM. Originally it was not planned to give support to 64 bits instructions but due to them 
+	not being very different from 32 bits instructions, the support may be added on the future.
+	Another reason to do this is beacuse i wanted to provide an implementation as an example for such a thing that wasn't too complicated to understand or 
+	insanely large, as for example the "objdump" utility of GNU whose source code can be found but due to its size it turns out to be very complicated to use it as a guide. 
+
+	I hope it may be usefull for those of you that are interested in these topics.
+
+======================================================================================================	
+******************************************************************************************************
+*/
+
 #include "dissasm.h"
 #include "decoder.h"
 
@@ -8,6 +35,7 @@ void read_file(FILE* fp, Elf32_Ehdr* elfhead){
 	//  read the header file 
 
 	fread(elfhead,sizeof(Elf32_Ehdr),1,fp);
+
 	// check that it open it correctly 
 	if( elfhead->e_ident[EI_MAG0] != 0x7f || elfhead->e_ident[EI_MAG1] != 'E' ||
 	 elfhead->e_ident[EI_MAG2] != 'L' || elfhead->e_ident[EI_MAG3] != 'F' ){
@@ -56,21 +84,21 @@ void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 
 		instructions = malloc(elf_shdr[i].sh_size );
 
-		printf(" section name : %s\n",string_table + elf_shdr[i].sh_name);
-		printf(" section type : %d\n", elf_shdr[i].sh_type );
-		printf(" section size : %d\n",elf_shdr[i].sh_size );
 
 		// read data from section 
     	fseek(fp,elf_shdr[i].sh_offset,SEEK_SET);
  		fread(instructions,elf_shdr[i].sh_size,1,fp);
 
 		// find name 
-		printf(" Dissasembly of section %s\n",string_table + elf_shdr[i].sh_name );
 
-
+ 		// we only want the sections text for now
 		if( !strcmp (string_table + elf_shdr[i].sh_name, ".text") ){
 
+			printf(" section name : %s\n",string_table + elf_shdr[i].sh_name);
+			printf(" section type : %d\n", elf_shdr[i].sh_type );
+			printf(" section size : %d\n",elf_shdr[i].sh_size );
 
+			printf(" Dissasembly of section %s\n",string_table + elf_shdr[i].sh_name );
 			printf("\n");
 			printf(" _start: \n");
 			printf("\n");

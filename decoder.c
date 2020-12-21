@@ -2,7 +2,7 @@
 
 char* extended_registers [8] = { "eax","ecx","edx","ebx","esp","ebp", "esi", "edi"};
 char* half_registers [8] = { "ax","cx","dx","bx","sp","bp", "si", "di"};
-char res [4]; // to store the bytes of an immediate
+char* indirec_registers [8] = { "[eax]","[ecx]","[edx]","[ebx]","[esp]","[ebp]", "[esi]", "[edi]"};
 
 
 /*
@@ -49,7 +49,24 @@ uint8_t is_reg( char* operand ){
 	return 0;
 }
 
+/***************************************************************************************************************************************
+=====================================================================================================================================
 
+INST_SIZE 
+calculates the size of an complete instruction.
+
+according to the information of the opcode table, we add to the offset the necesary displacement .
+
+1)if it is a no operand instruction then it doesn't have mod byte, so it is not requiered to check anything else, it has 1 byte displacement.
+
+2) if it has one operand, it may or may not use a register, most of times it doesnt require a mod byte either cuz info about the operand
+is found on the opcade table, they tend to be immediates or register names.
+
+3) if it has two operands then it surely has a mod byte (and maybe a sybe byte), so we need to add one byte per the mod byte and 
+check if it uses immediates or other stuff.
+
+====================================================================================================================================
+*/
 
 uint8_t inst_size(uint8_t* instructions, uint8_t opcode, uint8_t offset){
 
@@ -67,23 +84,32 @@ uint8_t inst_size(uint8_t* instructions, uint8_t opcode, uint8_t offset){
 	// the instructions has one operand so a move byte, we have to determinate its size 
 	else if ( !string_match(op_table[file][row].first_op,"nop") && string_match(op_table[file][row].sec_op, "nop") ){ 
 
+		// uses and immediate
+
 		if(op_table[file][row].first_op[0] == 'O') res+=4;
 		
 
-		// tiene mod byte
+		// has mod byte
+
 		else if ( op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E' ) res+=2;
 		
-		// no tiene mod byte,seguro era registro
+		// it had the parameter harcoded on the opcode table 
+		 
 		else res++;
 
 	}
 
-	// two operands . it has mode byte
+	// two operands 
 	else{ 
 
+		// it has a mod byte and doens't use and immediate.
+
 		if ( (op_table[file][row].first_op[0] == 'G' || op_table[file][row].first_op[0] == 'E')  && op_table[file][row].sec_op[0] != 'I' ) res+=2;
-		
+			
+		// it has a mod byte and use and immediate.
+			
 		else if(op_table[file][row].sec_op[0] == 'I') res+=5;	
+
 
 		else res+=2;
 
@@ -108,9 +134,9 @@ void has_immediate(uint8_t* instructions, char* name ,char* op1 , uint8_t offset
 		uint8_t data1 = instructions[offset+2];
 		uint8_t data2 = instructions[offset+3];
 		uint8_t data3 = instructions[offset+4];
-		uint8_t data4 = instructions[offset+5];
+	//	uint8_t data4 = instructions[offset+5];
 
-		int immediate = ( data1 << 24) | (data2 << 16)  | (data3 << 8) | data4;
+		int immediate = ( data1 << 24) | (data2 << 16)  | (data3 << 8) ;
 		printf("  %s %s, %d \n", name, op1, immediate );
 }
 
@@ -145,15 +171,21 @@ char* operand_decode ( uint8_t * instructions, char * operand , uint8_t offset  
 
 		uint8_t modByte = instructions[offset+1];
 
-		uint8_t r1 = modByte & 0x7; 			//index
-		uint8_t r2 = (modByte & 0xc0) >> 6; 	// mod 
+		uint8_t index = modByte & 0x7; 			//index
+		uint8_t mod = (modByte & 0xc0) >> 6; 	// mod 
 
-		if( r2 == 0x3){ 				// the mod bits indicate that the r/g bits are extended_registers 
 
-			return extended_registers[r1];
+		switch(mod){
+
+			case 0x00 :  							// indirect access
+				return indirec_registers[index];
+
+			case 0x3 :
+				return extended_registers[index]; 	// direct access 
+
+			default :
+				return "xxx";
 		}
-
-		else return "xxx";
 
 	}
 
