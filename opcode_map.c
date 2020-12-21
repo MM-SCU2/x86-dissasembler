@@ -612,7 +612,123 @@ opcode_entry op_table [16][16] = {
  		(char*) "nop",
  		(char*) "nop",
  	},
+ 	[6][2] = (opcode_entry) {
 
+ 		(char*) "bound",
+ 		(char*) "Gv",
+ 		(char*) "Ma",
+ 	},
+ 	[6][3] = (opcode_entry) {
+
+ 		(char*) "arpl",
+ 		(char*) "Ew",
+ 		(char*) "Gw",
+ 	},
+ 	[6][4] = (opcode_entry) {
+
+ 		(char*) "fs",
+ 		(char*) "prefix",
+ 		(char*) "nop",
+ 	},
+ 	[6][5] = (opcode_entry) {
+
+ 		(char*) "gs",
+ 		(char*) "prefix",
+ 		(char*) "nop",
+ 	},
+ 	[6][6] = (opcode_entry) {
+
+ 		(char*) "operand",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+ 	[6][7] = (opcode_entry) {
+
+ 		(char*) "adress",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+ 	[6][8] = (opcode_entry) {
+
+ 		(char*) "push",
+ 		(char*) "Iz",
+ 		(char*) "nop",
+ 	},
+ 	[6][9] = (opcode_entry) {
+
+ 		(char*) "imul",
+ 		(char*) "Gv",
+ 		(char*) "Ez",
+ 		// "Iz"
+ 	},
+ 	[6][10] = (opcode_entry) {
+
+ 		(char*) "push",
+ 		(char*) "Ib",
+ 		(char*) "nop",
+ 	},
+ 	[6][11] = (opcode_entry) {
+
+ 		(char*) "imul",
+ 		(char*) "Gv",
+ 		(char*) "Ez",
+ 		// "Ib"
+ 	},
+ 	[6][12] = (opcode_entry) {
+
+ 		(char*) "ins",
+ 		(char*) "Yb",
+ 		(char*) "DX",
+ 	},
+ 	[6][13] = (opcode_entry) {
+
+ 		(char*) "ins",
+ 		(char*) "Yz",
+ 		(char*) "DX",
+ 	},
+ 	[6][14] = (opcode_entry) {
+
+ 		(char*) "outs",
+ 		(char*) "DX",
+ 		(char*) "Xb",
+ 	},
+ 	[6][15] = (opcode_entry) {
+
+ 		(char*) "outw",
+ 		(char*) "DX",
+ 		(char*) "Xz",
+ 	},
+ 	[7][0] = (opcode_entry) {
+
+ 		(char*) "jmp",
+ 		(char*) "O",
+ 		(char*) "nop",
+ 	},
+
+ 	[8][4] = (opcode_entry) {
+
+ 		(char*) "test",
+ 		(char*) "Eb",
+ 		(char*) "Gb",
+ 	},
+ 	[8][5] = (opcode_entry) {
+
+ 		(char*) "test",
+ 		(char*) "Ev",
+ 		(char*) "Gv",
+ 	},
+ 	[8][6] = (opcode_entry) {
+
+ 		(char*) "xchg",
+ 		(char*) "Eb",
+ 		(char*) "Gb",
+ 	},
+ 	[8][7] = (opcode_entry) {
+
+ 		(char*) "xchg",
+ 		(char*) "Ev",
+ 		(char*) "Gv",
+ 	},
 
  	[8][8] = (opcode_entry) {
 
@@ -638,6 +754,76 @@ opcode_entry op_table [16][16] = {
  		(char*) "mov",
  		(char*) "Gv",
  		(char*) "Ev",
+ 	 },
+ 	 [8][12] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "Ev",
+ 		(char*) "Sw",
+ 	 },
+ 	 [8][13] = (opcode_entry) {
+
+ 		(char*) "lea",
+ 		(char*) "Gv",
+ 		(char*) "M",
+ 	 },
+ 	 [8][14] = (opcode_entry) {
+
+ 		(char*) "mov",
+ 		(char*) "Sw",
+ 		(char*) "Ew",
+ 	 },
+ 	 [8][15] = (opcode_entry) {
+
+ 		(char*) "pop",
+ 		(char*) "Gv",
+ 		(char*) "nop",
+ 	 },
+ 	 [9][1] = (opcode_entry) {
+
+ 	 	(char*) "xchg",
+ 		(char*) "ecx",
+ 		(char*) "nop",
+
+ 	 },
+ 	 [9][2] = (opcode_entry) {
+
+ 	 	(char*) "xchg",
+ 		(char*) "edx",
+ 		(char*) "nop",
+
+ 	 },
+ 	 [9][3] = (opcode_entry) {
+
+ 	 	(char*) "xchg",
+ 		(char*) "ebx",
+ 		(char*) "nop",
+ 	 },
+ 	 [9][4] = (opcode_entry) {
+
+ 	 	(char*) "xchg",
+ 		(char*) "esp",
+ 		(char*) "nop",
+
+ 	 },
+ 	 [9][5] = (opcode_entry) {
+
+ 	 	(char*) "xchg",
+ 		(char*) "ebp",
+ 		(char*) "nop",
+ 	 },
+ 	 [9][6] = (opcode_entry) {
+
+ 	 	(char*) "xchg",
+ 		(char*) "esi",
+ 		(char*) "nop",
+ 	 },
+ 	 [9][7] = (opcode_entry) {
+
+ 	 	(char*) "xchg",
+ 		(char*) "edi",
+ 		(char*) "nop",
+
  	 },
 
  	[11][0] = (opcode_entry) {
@@ -736,6 +922,86 @@ opcode_entry op_table [16][16] = {
  		(char*) "edi",
  		(char*) "Iv",
  	},
+
+ 	[15][0] = (opcode_entry) {
+
+ 		(char*) "Lock",
+ 		(char*) "prefix",
+ 		(char*) "nop",
+ 	},
+ 	[15][1] = (opcode_entry) {
+
+ 		(char*) "int1",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+ 	[15][2] = (opcode_entry) {
+
+ 		(char*) "REPNE",
+ 		(char*) "prefix",
+ 		(char*) "nop",
+ 	},
+ 	[15][3] = (opcode_entry) {
+
+ 		(char*) "REPE",
+ 		(char*) "prefix",
+ 		(char*) "nop",
+ 	},
+ 	[15][4] = (opcode_entry) {
+
+ 		(char*) "hlt",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+ 	[15][5] = (opcode_entry) {
+
+ 		(char*) "cmc",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+
+ 	[15][8] = (opcode_entry) {
+
+ 		(char*) "clc",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+
+ 	[15][9] = (opcode_entry) {
+
+ 		(char*) "stc",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+
+ 	[15][10] = (opcode_entry) {
+
+ 		(char*) "cli",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+
+ 	[15][11] = (opcode_entry) {
+
+ 		(char*) "sti",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+ 	[15][12] = (opcode_entry) {
+
+ 		(char*) "cld",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+ 	
+ 	[15][13] = (opcode_entry) {
+
+ 		(char*) "std",
+ 		(char*) "nop",
+ 		(char*) "nop",
+ 	},
+
+
 };
 
 

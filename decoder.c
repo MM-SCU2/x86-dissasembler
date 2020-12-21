@@ -68,6 +68,8 @@ check if it uses immediates or other stuff.
 ====================================================================================================================================
 */
 
+
+
 uint8_t inst_size(uint8_t* instructions, uint8_t opcode, uint8_t offset){
 
 

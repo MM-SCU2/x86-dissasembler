@@ -97,7 +97,6 @@ void read_sections(FILE* fp,Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr){
 			printf(" section name : %s\n",string_table + elf_shdr[i].sh_name);
 			printf(" section type : %d\n", elf_shdr[i].sh_type );
 			printf(" section size : %d\n",elf_shdr[i].sh_size );
-
 			printf(" Dissasembly of section %s\n",string_table + elf_shdr[i].sh_name );
 			printf("\n");
 			printf(" _start: \n");
