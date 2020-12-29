@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/leviathan/x86-disassembler/src/decoder.c
+/home/leviathan/x86-dissasembler/src/decoder.c
 decoder.h
-/home/leviathan/x86-disassembler/src/decoder.h
+/home/leviathan/x86-dissasembler/src/decoder.h
 
-/home/leviathan/x86-disassembler/src/decoder.h
+/home/leviathan/x86-dissasembler/src/decoder.h
 stdio.h
 -
 stdlib.h
@@ -18,15 +18,15 @@ stdlib.h
 stdint.h
 -
 opcode_map.h
-/home/leviathan/x86-disassembler/src/opcode_map.h
+/home/leviathan/x86-dissasembler/src/opcode_map.h
 
-/home/leviathan/x86-disassembler/src/dissasm.c
+/home/leviathan/x86-dissasembler/src/dissasm.c
 dissasm.h
-/home/leviathan/x86-disassembler/src/dissasm.h
+/home/leviathan/x86-dissasembler/src/dissasm.h
 decoder.h
-/home/leviathan/x86-disassembler/src/decoder.h
+/home/leviathan/x86-dissasembler/src/decoder.h
 
-/home/leviathan/x86-disassembler/src/dissasm.h
+/home/leviathan/x86-dissasembler/src/dissasm.h
 stdio.h
 -
 string.h
@@ -36,11 +36,11 @@ stdlib.h
 ctype.h
 -
 elf.h
-/home/leviathan/x86-disassembler/src/elf.h
+/home/leviathan/x86-dissasembler/src/elf.h
 
-/home/leviathan/x86-disassembler/src/opcode_map.c
+/home/leviathan/x86-dissasembler/src/opcode_map.c
 opcode_map.h
-/home/leviathan/x86-disassembler/src/opcode_map.h
+/home/leviathan/x86-dissasembler/src/opcode_map.h
 
-/home/leviathan/x86-disassembler/src/opcode_map.h
+/home/leviathan/x86-dissasembler/src/opcode_map.h
 

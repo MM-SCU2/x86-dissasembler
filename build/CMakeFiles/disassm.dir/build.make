@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/leviathan/x86-disassembler
+CMAKE_SOURCE_DIR = /home/leviathan/x86-dissasembler
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/leviathan/x86-disassembler/build
+CMAKE_BINARY_DIR = /home/leviathan/x86-dissasembler/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/disassm.dir/depend.make
@@ -59,42 +59,42 @@ include CMakeFiles/disassm.dir/flags.make
 
 CMakeFiles/disassm.dir/src/decoder.c.o: CMakeFiles/disassm.dir/flags.make
 CMakeFiles/disassm.dir/src/decoder.c.o: ../src/decoder.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leviathan/x86-disassembler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/disassm.dir/src/decoder.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/disassm.dir/src/decoder.c.o   -c /home/leviathan/x86-disassembler/src/decoder.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leviathan/x86-dissasembler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/disassm.dir/src/decoder.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/disassm.dir/src/decoder.c.o   -c /home/leviathan/x86-dissasembler/src/decoder.c
 
 CMakeFiles/disassm.dir/src/decoder.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/disassm.dir/src/decoder.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leviathan/x86-disassembler/src/decoder.c > CMakeFiles/disassm.dir/src/decoder.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leviathan/x86-dissasembler/src/decoder.c > CMakeFiles/disassm.dir/src/decoder.c.i
 
 CMakeFiles/disassm.dir/src/decoder.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/disassm.dir/src/decoder.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leviathan/x86-disassembler/src/decoder.c -o CMakeFiles/disassm.dir/src/decoder.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leviathan/x86-dissasembler/src/decoder.c -o CMakeFiles/disassm.dir/src/decoder.c.s
 
 CMakeFiles/disassm.dir/src/dissasm.c.o: CMakeFiles/disassm.dir/flags.make
 CMakeFiles/disassm.dir/src/dissasm.c.o: ../src/dissasm.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leviathan/x86-disassembler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/disassm.dir/src/dissasm.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/disassm.dir/src/dissasm.c.o   -c /home/leviathan/x86-disassembler/src/dissasm.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leviathan/x86-dissasembler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/disassm.dir/src/dissasm.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/disassm.dir/src/dissasm.c.o   -c /home/leviathan/x86-dissasembler/src/dissasm.c
 
 CMakeFiles/disassm.dir/src/dissasm.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/disassm.dir/src/dissasm.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leviathan/x86-disassembler/src/dissasm.c > CMakeFiles/disassm.dir/src/dissasm.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leviathan/x86-dissasembler/src/dissasm.c > CMakeFiles/disassm.dir/src/dissasm.c.i
 
 CMakeFiles/disassm.dir/src/dissasm.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/disassm.dir/src/dissasm.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leviathan/x86-disassembler/src/dissasm.c -o CMakeFiles/disassm.dir/src/dissasm.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leviathan/x86-dissasembler/src/dissasm.c -o CMakeFiles/disassm.dir/src/dissasm.c.s
 
 CMakeFiles/disassm.dir/src/opcode_map.c.o: CMakeFiles/disassm.dir/flags.make
 CMakeFiles/disassm.dir/src/opcode_map.c.o: ../src/opcode_map.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leviathan/x86-disassembler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/disassm.dir/src/opcode_map.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/disassm.dir/src/opcode_map.c.o   -c /home/leviathan/x86-disassembler/src/opcode_map.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/leviathan/x86-dissasembler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/disassm.dir/src/opcode_map.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/disassm.dir/src/opcode_map.c.o   -c /home/leviathan/x86-dissasembler/src/opcode_map.c
 
 CMakeFiles/disassm.dir/src/opcode_map.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/disassm.dir/src/opcode_map.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leviathan/x86-disassembler/src/opcode_map.c > CMakeFiles/disassm.dir/src/opcode_map.c.i
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/leviathan/x86-dissasembler/src/opcode_map.c > CMakeFiles/disassm.dir/src/opcode_map.c.i
 
 CMakeFiles/disassm.dir/src/opcode_map.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/disassm.dir/src/opcode_map.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leviathan/x86-disassembler/src/opcode_map.c -o CMakeFiles/disassm.dir/src/opcode_map.c.s
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/leviathan/x86-dissasembler/src/opcode_map.c -o CMakeFiles/disassm.dir/src/opcode_map.c.s
 
 # Object files for target disassm
 disassm_OBJECTS = \
@@ -110,7 +110,7 @@ disassm: CMakeFiles/disassm.dir/src/dissasm.c.o
 disassm: CMakeFiles/disassm.dir/src/opcode_map.c.o
 disassm: CMakeFiles/disassm.dir/build.make
 disassm: CMakeFiles/disassm.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/leviathan/x86-disassembler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable disassm"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/leviathan/x86-dissasembler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable disassm"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/disassm.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -123,6 +123,6 @@ CMakeFiles/disassm.dir/clean:
 .PHONY : CMakeFiles/disassm.dir/clean
 
 CMakeFiles/disassm.dir/depend:
-	cd /home/leviathan/x86-disassembler/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/leviathan/x86-disassembler /home/leviathan/x86-disassembler /home/leviathan/x86-disassembler/build /home/leviathan/x86-disassembler/build /home/leviathan/x86-disassembler/build/CMakeFiles/disassm.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/leviathan/x86-dissasembler/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/leviathan/x86-dissasembler /home/leviathan/x86-dissasembler /home/leviathan/x86-dissasembler/build /home/leviathan/x86-dissasembler/build /home/leviathan/x86-dissasembler/build/CMakeFiles/disassm.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/disassm.dir/depend
 

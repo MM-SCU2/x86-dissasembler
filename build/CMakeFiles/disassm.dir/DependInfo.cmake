@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/leviathan/x86-disassembler/src/decoder.c" "/home/leviathan/x86-disassembler/build/CMakeFiles/disassm.dir/src/decoder.c.o"
-  "/home/leviathan/x86-disassembler/src/dissasm.c" "/home/leviathan/x86-disassembler/build/CMakeFiles/disassm.dir/src/dissasm.c.o"
-  "/home/leviathan/x86-disassembler/src/opcode_map.c" "/home/leviathan/x86-disassembler/build/CMakeFiles/disassm.dir/src/opcode_map.c.o"
+  "/home/leviathan/x86-dissasembler/src/decoder.c" "/home/leviathan/x86-dissasembler/build/CMakeFiles/disassm.dir/src/decoder.c.o"
+  "/home/leviathan/x86-dissasembler/src/dissasm.c" "/home/leviathan/x86-dissasembler/build/CMakeFiles/disassm.dir/src/dissasm.c.o"
+  "/home/leviathan/x86-dissasembler/src/opcode_map.c" "/home/leviathan/x86-dissasembler/build/CMakeFiles/disassm.dir/src/opcode_map.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
