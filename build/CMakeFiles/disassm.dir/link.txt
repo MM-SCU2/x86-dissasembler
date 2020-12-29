@@ -1,0 +1,1 @@
+/usr/bin/cc  -std=gnu++11 -ggdb3 -g   CMakeFiles/disassm.dir/src/decoder.c.o CMakeFiles/disassm.dir/src/dissasm.c.o CMakeFiles/disassm.dir/src/opcode_map.c.o  -o disassm 
