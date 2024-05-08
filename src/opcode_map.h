@@ -3,14 +3,12 @@
 
 typedef struct {
 
-	char* instruction;
-	char* first_op;
-	char* sec_op;
+  char *instruction;
+  char *first_op;
+  char *sec_op;
 
 } opcode_entry;
-
 
 opcode_entry op_table[16][16];
 
 #endif
-

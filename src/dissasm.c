@@ -1,15 +1,15 @@
 /**************************************************************************************************
 ===================================================================================================
 
-	x86 DISASSEMBLER
+        x86 DISASSEMBLER
 
-	Author: MMS
+        Author: MMS
 
-	start Date: 2/12/2020
+        start Date: 2/12/2020
 
-	Programming lenguage: C
+        Programming lenguage: C
 
-	Supported compiled format: ELF files (Executable Linkeable Format)
+        Supported compiled format: ELF files (Executable Linkeable Format)
 
 
 ======================================================================================================
@@ -19,160 +19,147 @@
 #include "dissasm.h"
 #include "decoder.h"
 
+void read_file(FILE *fp, Elf32_Ehdr *elfhead) {
 
+  // Read the header file
 
-void read_file(FILE* fp, Elf32_Ehdr* elfhead) {
+  fread(elfhead, sizeof(Elf32_Ehdr), 1, fp);
 
-	//Read the header file
+  // check that it open it correctly
+  if (elfhead->e_ident[EI_MAG0] != 0x7f || elfhead->e_ident[EI_MAG1] != 'E' ||
+      elfhead->e_ident[EI_MAG2] != 'L' || elfhead->e_ident[EI_MAG3] != 'F') {
 
-	fread(elfhead, sizeof(Elf32_Ehdr), 1, fp);
+    printf("It is not an ELF file\n");
+    fclose(fp);
+    exit(EXIT_FAILURE);
+  }
 
-	// check that it open it correctly
-	if (elfhead->e_ident[EI_MAG0] != 0x7f || elfhead->e_ident[EI_MAG1] != 'E' ||
-	        elfhead->e_ident[EI_MAG2] != 'L' || elfhead->e_ident[EI_MAG3] != 'F') {
-
-		printf("It is not an ELF file\n");
-		fclose(fp);
-		exit(EXIT_FAILURE);
-	}
-
-	printf(" File type %d\n", elfhead->e_type );
-	printf(" Machine version %d\n", elfhead->e_machine); // number 3 indicates intel 80386
-	printf(" Entry %d\n", elfhead->e_entry);
+  printf(" File type %d\n", elfhead->e_type);
+  printf(" Machine version %d\n",
+         elfhead->e_machine); // number 3 indicates intel 80386
+  printf(" Entry %d\n", elfhead->e_entry);
 }
 
+void read_sections(FILE *fp, Elf32_Ehdr *elfhead, Elf32_Shdr *elf_shdr) {
 
+  // Stand the FP pointer upon the beggining of the section header
+  // and copy into the buffer
 
+  fseek(fp, elfhead->e_shoff, SEEK_SET);
+  fread(elf_shdr, sizeof(Elf32_Shdr), elfhead->e_shnum, fp);
 
-void read_sections(FILE* fp, Elf32_Ehdr* elfhead, Elf32_Shdr* elf_shdr) {
+  // allocate the string table to cache the section names
 
+  char *string_table;
+  string_table = malloc(elf_shdr[elfhead->e_shstrndx].sh_size);
 
-	// Stand the FP pointer upon the beggining of the section header
-	// and copy into the buffer
+  fseek(fp, elf_shdr[elfhead->e_shstrndx].sh_offset,
+        SEEK_SET); // set the fp pointer upon the string table section
+  fread(string_table, elf_shdr[elfhead->e_shstrndx].sh_size, 1,
+        fp); // bring the table to memory
 
-	fseek(fp, elfhead->e_shoff, SEEK_SET);
-	fread(elf_shdr,  sizeof(Elf32_Shdr), elfhead->e_shnum , fp);
+  printf("========================\n");
+  printf("************************\n");
+  printf("READING SECTIONS\n");
+  printf("************************\n");
+  printf("========================\n");
 
-	// allocate the string table to cache the section names
+  uint8_t *instructions = NULL;
 
-	char* string_table;
-	string_table = malloc( elf_shdr[elfhead->e_shstrndx].sh_size);
+  for (int i = 0; i < elfhead->e_shnum; i++) {
 
-	fseek(fp, elf_shdr[elfhead->e_shstrndx].sh_offset, SEEK_SET); 		// set the fp pointer upon the string table section
-	fread(string_table, elf_shdr[elfhead->e_shstrndx].sh_size, 1, fp); 	// bring the table to memory
+    instructions = malloc(elf_shdr[i].sh_size);
 
+    // read data from section
+    fseek(fp, elf_shdr[i].sh_offset, SEEK_SET);
+    fread(instructions, elf_shdr[i].sh_size, 1, fp);
 
-	printf("========================\n");
-	printf("************************\n");
-	printf("READING SECTIONS\n" );
-	printf("************************\n");
-	printf("========================\n");
+    // find name
 
+    // we only want the sections text for now
+    if (!strcmp(string_table + elf_shdr[i].sh_name, ".text")) {
 
-	uint8_t* instructions = NULL;
+      printf(" section name : %s\n", string_table + elf_shdr[i].sh_name);
+      printf(" section type : %d\n", elf_shdr[i].sh_type);
+      printf(" section size : %d\n", elf_shdr[i].sh_size);
+      printf(" Dissasembly of section %s\n",
+             string_table + elf_shdr[i].sh_name);
+      printf("\n");
+      printf(" _start: \n");
+      printf("\n");
 
-	for ( int i = 0 ; i < elfhead->e_shnum ; i++) {
+      for (uint8_t j = 0; j < elf_shdr[i].sh_size;) {
 
-		instructions = malloc(elf_shdr[i].sh_size );
+        decode(instructions, instructions[j], j); // decode each instructions
+        j += inst_size(instructions, instructions[j], j);
+      }
+    }
 
+    printf("\n");
+    free(instructions);
+  }
 
-		// read data from section
-		fseek(fp, elf_shdr[i].sh_offset, SEEK_SET);
-		fread(instructions, elf_shdr[i].sh_size, 1, fp);
-
-		// find name
-
-		// we only want the sections text for now
-		if (!strcmp (string_table + elf_shdr[i].sh_name, ".text") ) {
-
-			printf(" section name : %s\n", string_table + elf_shdr[i].sh_name);
-			printf(" section type : %d\n", elf_shdr[i].sh_type );
-			printf(" section size : %d\n", elf_shdr[i].sh_size );
-			printf(" Dissasembly of section %s\n", string_table + elf_shdr[i].sh_name );
-			printf("\n");
-			printf(" _start: \n");
-			printf("\n");
-
-			for (uint8_t j = 0; j < elf_shdr[i].sh_size; ) {
-
-
-				decode(instructions, instructions[j], j);  			// decode each instructions
-				j += inst_size(instructions, instructions[j], j);
-
-			}
-		}
-
-
-		printf("\n");
-		free(instructions);
-	}
-
-	free(string_table);
+  free(string_table);
 }
 
+void read_ELF(int argc, char **argv) {
 
-void read_ELF( int argc , char** argv ) {
+  FILE *fp;
+  Elf32_Ehdr *elfhead;
+  Elf32_Shdr *elf_shdr;
 
+  if (argc < 2) {
 
-	FILE * fp;
-	Elf32_Ehdr* elfhead ;
-	Elf32_Shdr* elf_shdr ;
+    printf("incorrect number of arguments\n");
+    exit(EXIT_FAILURE);
+  }
 
-	if ( argc < 2) {
+  // we open the file
 
-		printf("incorrect number of arguments\n" );
-		exit(EXIT_FAILURE);
-	}
+  if ((fp = fopen(argv[1], "rb")) == NULL) {
 
-	// we open the file
+    printf("Fail in opening %s\n", argv[1]);
+    exit(EXIT_FAILURE);
+  }
 
-	if ((fp = fopen( argv[1], "rb" )) == NULL)  {
+  // allocate place to bring the header
 
-		printf("Fail in opening %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
+  elfhead = malloc(sizeof(Elf32_Ehdr));
 
-	// allocate place to bring the header
+  if (!elfhead) {
 
-	elfhead = malloc( sizeof(Elf32_Ehdr));
+    printf("Run out of memory for ELF header\n");
+    fclose(fp);
+    exit(EXIT_FAILURE);
+  }
 
-	if (!elfhead) {
+  // read the file
 
-		printf("Run out of memory for ELF header\n");
-		fclose(fp);
-		exit(EXIT_FAILURE);
-	}
+  read_file(fp, elfhead);
 
-	// read the file
+  // allocate space for the section table
 
-	read_file(fp, elfhead);
+  elf_shdr = malloc(sizeof(Elf32_Shdr) * elfhead->e_shnum);
 
-	// allocate space for the section table
+  if (!elf_shdr) {
 
-	elf_shdr = malloc( sizeof(Elf32_Shdr) * elfhead->e_shnum);
+    printf("Run out of memory for section header\n");
+    free(elfhead);
+    fclose(fp);
+    exit(EXIT_FAILURE);
+  }
 
-	if (!elf_shdr) {
+  // read sectors
 
-		printf("Run out of memory for section header\n");
-		free( elfhead);
-		fclose(fp);
-		exit(EXIT_FAILURE);
-	}
+  read_sections(fp, elfhead, elf_shdr);
 
-	// read sectors
-
-	read_sections(fp, elfhead, elf_shdr);
-
-	free(elfhead);
-	free(elf_shdr);
-	fclose(fp);
-
+  free(elfhead);
+  free(elf_shdr);
+  fclose(fp);
 }
 
+int main(int argc, char **argv) {
 
-
-int main (int argc, char** argv) {
-
-	read_ELF(argc, argv);
-	return 0;
+  read_ELF(argc, argv);
+  return 0;
 }
